@@ -72,96 +72,183 @@ void main() {
 //   }
 // }
 
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: Text('Form'),
+//         ),
+//         body: Center(
+//           child: ChangeForm(),
+//         )
+//       )
+//     );
+//   }
+// }
+// class ChangeForm extends StatefulWidget {
+//   @override
+//   _ChangeFormState createState() => _ChangeFormState();
+// }
+// class _ChangeFormState extends State<ChangeForm> {
+//   int _count = 0;
+//   void _handlePressed() {
+//     setState(() {
+//       _count++;
+//     });
+//   }
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: EdgeInsets.all(50),
+//       child: Column(
+//         children: <Widget>[
+//           Text(
+//             "$_count",
+//             style: TextStyle(
+//               color: Colors.blueAccent,
+//               fontSize: 30,
+//               fontWeight: FontWeight.w500,
+//             ),
+//           ),
+//           // ElevatedButton(
+//           OutlinedButton(
+//             // style: ElevatedButton.styleFrom(
+//             style: OutlinedButton.styleFrom(
+//               // backgroundColor: Colors.blueAccent,
+//               shape: RoundedRectangleBorder(
+//                 borderRadius: BorderRadius.circular(20),
+//               )
+//             ),
+//             onPressed: _handlePressed,
+//             child: Text(
+//               '更新',
+//               style: TextStyle(
+//                 color: Colors.blueAccent,
+//                 fontSize: 20,
+//               )
+//             ),
+//           ),
+//           IconButton(
+//             iconSize: 100,
+//             onPressed: _handlePressed,
+//             color: Colors.blueAccent,
+//             icon: Icon(Icons.add_circle_outline),
+//           ),
+//           PopupMenuButton<String>(
+//             onSelected: _handleChange,
+//             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+//               const PopupMenuItem<String>(
+//                 value:"1",
+//                 child: Text('選択1'),
+//               ),
+//               const PopupMenuItem<String>(
+//                 value:"2",
+//                 child: Text('選択2'),
+//               ),
+//               const PopupMenuItem<String>(
+//                 value:"3",
+//                 child: Text('選択3'),
+//               ),
+//             ]
+//           )
+//         ],
+//       ),
+//     );
+//   }
+//   void _handleChange(String value) {
+//     print(value);
+//   }
+// }
+
 class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MainPage();
+  }
+}
+class MainPage extends StatefulWidget {
+  @override
+  _MainPageState createState() => new _MainPageState();
+}
+class _MainPageState extends State<MainPage> {
+  int _currentIndex = 0;
+  final List<PageWidget> _pageWidgets = [
+    const PageWidget(color: Colors.white, title: 'HOME'),
+    const PageWidget(color: Colors.blue, title: 'ALBUM'),
+    const PageWidget(color: Colors.orange, title: 'CHAT'),
+  ];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Form'),
+        appBar:  AppBar(
+          leading: Icon(Icons.menu),
+          title:  Text('AppBar'),
+          backgroundColor: Colors.orange,
+          centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.face, color: Colors.white),
+              onPressed: () { print('A'); },
+            ),
+            IconButton(
+              icon: Icon(Icons.mail, color: Colors.white),
+              onPressed: () { print('B'); },
+            )
+          ],
         ),
-        body: Center(
-          child: ChangeForm(),
-        )
+        body: _pageWidgets.elementAt(_currentIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem> [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'HOME'
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album),
+              label: 'ALBUM'
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: 'CHAT'
+            ),
+          ],
+          currentIndex: _currentIndex,
+          fixedColor: Colors.blueAccent,
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          // type: BottomNavigationBarType.shifting,
+        ),
       )
     );
   }
-}
-class ChangeForm extends StatefulWidget {
-  @override
-  _ChangeFormState createState() => _ChangeFormState();
-}
-class _ChangeFormState extends State<ChangeForm> {
-  int _count = 0;
-  void _handlePressed() {
+  void _onItemTapped(int index) {
     setState(() {
-      _count++;
+      _currentIndex = index;
+      print(index);
     });
   }
+}
+class PageWidget extends StatelessWidget {
+  final Color color;
+  final String title;
+  const PageWidget({ Key? key, required this.color, required this.title}) : super(key: key);
+  @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(50),
-      child: Column(
-        children: <Widget>[
-          Text(
-            "$_count",
-            style: TextStyle(
-              color: Colors.blueAccent,
-              fontSize: 30,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          // ElevatedButton(
-          OutlinedButton(
-            // style: ElevatedButton.styleFrom(
-            style: OutlinedButton.styleFrom(
-              // backgroundColor: Colors.blueAccent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              )
-            ),
-            onPressed: _handlePressed,
-            child: Text(
-              '更新',
-              style: TextStyle(
-                color: Colors.blueAccent,
-                fontSize: 20,
-              )
-            ),
-          ),
-          IconButton(
-            iconSize: 100,
-            onPressed: _handlePressed,
-            color: Colors.blueAccent,
-            icon: Icon(Icons.add_circle_outline),
-          ),
-          PopupMenuButton<String>(
-            onSelected: _handleChange,
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value:"1",
-                child: Text('選択1'),
-              ),
-              const PopupMenuItem<String>(
-                value:"2",
-                child: Text('選択2'),
-              ),
-              const PopupMenuItem<String>(
-                value:"3",
-                child: Text('選択3'),
-              ),
-            ]
+      color: color,
+      child: Center(
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 25,
           )
-        ],
+        ),
       ),
     );
   }
-  void _handleChange(String value) {
-    print(value);
-  }
 }
-
-
 
 
 
